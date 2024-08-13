@@ -1,0 +1,2 @@
+fetch_desc:
+    wget 'https://svn.rfam.org/svn/data_repos/trunk/Families/' -O - | rg -o 'RF\d+' | sort -u | xargs -I {} wget https://svn.rfam.org/svn/data_repos/trunk/Families/{}/DESC -O tests/files/{}

@@ -1,0 +1,20 @@
+[package]
+name = "infernal"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bio = "1.1.0"
+csv = "1.2.1"
+derive_builder = "0.20.0"
+lazy_static = "1.4.0"
+regex = "1.10.6"
+serde = { version = "^1", features = ["derive"] }
+strum = { version = "0.26", features = ["derive"] }
+thiserror = "1.0.63"
+
+[dev-dependencies]
+pretty_assertions = "1.4.0"
+rstest = "0.22.0"

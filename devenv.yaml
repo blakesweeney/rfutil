@@ -1,0 +1,7 @@
+inputs:
+  nixpkgs:
+    url: github:cachix/devenv-nixpkgs/rolling
+  personal:
+    url: sourcehut:~showyourcode/flakes
+    overlays:
+      - default
