@@ -40,7 +40,7 @@ where
 {
     pub fn to_writer(writer: W) -> Self {
         Self {
-            max_width: 80,
+            max_width: 79,
             writer,
         }
     }
