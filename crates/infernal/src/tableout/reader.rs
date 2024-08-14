@@ -35,7 +35,7 @@ pub enum HitsError {
     CsvError(#[from] csv::Error),
 }
 
-pub struct HitReader<R> {
+pub struct TabularReader<R> {
     inner: R,
 }
 
@@ -53,7 +53,7 @@ pub fn decode(raw: &str) -> &str {
     return raw;
 }
 
-impl<R> HitReader<R>
+impl<R> TabularReader<R>
 where
     R: io::Read,
 {
@@ -62,50 +62,47 @@ where
     }
 }
 
-impl HitReader<File> {
-    pub fn from_file(file: File) -> HitReader<File> {
+impl TabularReader<File> {
+    pub fn from_file(file: File) -> TabularReader<File> {
         Self::from_reader(file)
     }
 
-    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<HitReader<File>, ReaderError> {
+    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<TabularReader<File>, ReaderError> {
         let file = File::open(&path)
             .map_err(|e| ReaderError::FailedToOpenFile(PathBuf::from(path.as_ref()), e))?;
-        Ok(HitReader::from_reader(file))
+        Ok(TabularReader::from_reader(file))
     }
 }
 
-impl<R> HitReader<R> {
+impl<R> TabularReader<R> {
     pub fn new(reader: R) -> Self {
         Self { inner: reader }
     }
 }
 
-impl<R: io::BufRead> HitReader<R> {
-    pub fn v1(self) -> Hits<R, v1::Hit> {
+impl<R: io::BufRead> TabularReader<R> {
+    pub fn into_tabular<T>(self) -> Hits<R, T>
+    where
+        T: Tabular + DeserializeOwned,
+    {
         Hits {
             buf: String::new(),
             reader: BufReader::new(self.inner),
-            number_of_columns: 15,
-            hits: PhantomData::<v1::Hit>,
+            number_of_columns: T::columns(),
+            hits: PhantomData::<T>,
         }
     }
 
-    pub fn v2(self) -> Hits<R, v2::Hit> {
-        Hits {
-            buf: String::new(),
-            reader: BufReader::new(self.inner),
-            number_of_columns: 18,
-            hits: PhantomData::<v2::Hit>,
-        }
+    pub fn into_v1(self) -> Hits<R, v1::Hit> {
+        self.into_tabular()
     }
 
-    pub fn v3(self) -> Hits<R, v3::Hit> {
-        Hits {
-            buf: String::new(),
-            reader: BufReader::new(self.inner),
-            number_of_columns: 20,
-            hits: PhantomData::<v3::Hit>,
-        }
+    pub fn into_v2(self) -> Hits<R, v2::Hit> {
+        self.into_tabular()
+    }
+
+    pub fn into_v3(self) -> Hits<R, v3::Hit> {
+        self.into_tabular()
     }
 }
 
