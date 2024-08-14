@@ -77,7 +77,7 @@ impl Field {
             Field::ReferenceNumber => MergeAction::NoMerge,
             Field::ReferenceTitle => MergeAction::SpaceSeperated,
             Field::ReferenceLocation => MergeAction::SpaceSeperated,
-            Field::ReferenceAuthor => MergeAction::NoMerge,
+            Field::ReferenceAuthor => MergeAction::SpaceSeperated,
             Field::ReferencePmid => MergeAction::NoMerge,
             Field::WikiArticle => MergeAction::Combine,
             Field::Author => MergeAction::NoMerge,

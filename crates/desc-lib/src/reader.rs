@@ -87,8 +87,7 @@ fn parse_reference(
                 entries.pop();
             }
             Field::ReferenceAuthor => {
-                let authors = value.split("; ").map(|s| s.to_string()).collect();
-                builder.authors(authors);
+                builder.authors(value.to_string());
                 entries.pop();
             }
             Field::ReferencePmid => {

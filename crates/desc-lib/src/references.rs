@@ -10,7 +10,7 @@ pub struct DescReference {
     index: NonZeroUsize,
     pmid: String,
     title: String,
-    authors: Vec<String>,
+    authors: String,
     citation: String,
 }
 
@@ -36,12 +36,12 @@ impl DescReference {
         &self.title
     }
 
-    pub fn authors(&self) -> &[String] {
-        &self.authors
-    }
-
     pub fn citation(&self) -> &str {
         &self.citation
+    }
+
+    pub fn authors(&self) -> &str {
+        &self.authors
     }
 }
 
