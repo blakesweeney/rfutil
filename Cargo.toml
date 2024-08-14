@@ -4,4 +4,10 @@ members = [
   "crates/desc",
   "crates/desc-lib",
   "crates/infernal",
+  "crates/rfam",
 ]
+
+[workspace.dependencies]
+derive_builder = "0.20.0"
+serde = { version = "^1", features = ["derive"] }
+thiserror = "1.0.63"

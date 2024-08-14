@@ -1,0 +1,9 @@
+[package]
+name = "rfam"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+infernal = { path = "../infernal", version = "0.1.0" }
+derive_builder.workspace = true
+serde.workspace = true

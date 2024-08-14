@@ -11,3 +11,9 @@ pub struct Alignments {
     summary: Vec<Summary>,
     alignments: Vec<HitAlignment>,
 }
+
+impl Alignments {
+    pub fn builder() -> AlignmentsBuilder {
+        AlignmentsBuilder::default()
+    }
+}
