@@ -49,10 +49,23 @@ impl DatabaseReferences {
         }
     }
 
+    pub fn update(&mut self, xref: DatabaseReference) {
+        let mut seen = false;
+        for cur in &mut self.xrefs {
+            if cur.database_name == xref.database_name && cur.internal_id == xref.internal_id {
+                cur.name = xref.name.clone();
+                seen = true;
+            }
+        }
+        if !seen {
+            self.xrefs.push(xref)
+        }
+    }
+
     pub fn edit(&mut self, edit: XrefEdit) {
         match edit {
-            XrefEdit::Add(xref) => {
-                self.insert(xref);
+            XrefEdit::AddOrUpdate(xref) => {
+                self.update(xref);
             }
             XrefEdit::Clear => {
                 self.xrefs = Vec::new();

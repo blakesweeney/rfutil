@@ -9,7 +9,7 @@ use crate::{
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum XrefEdit {
-    Add(DatabaseReference),
+    AddOrUpdate(DatabaseReference),
     Clear,
     RemoveDb(String),
     RemoveEntry { db: String, internal_id: String },

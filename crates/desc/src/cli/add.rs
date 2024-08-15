@@ -41,12 +41,12 @@ pub fn reference_edit(term: &str) -> Result<Edit> {
             match db_name.as_ref() {
                 "HTTP" => {
                     let db_ref = DatabaseReference::new("URL".to_string(), term.to_string(), None);
-                    Ok(Edit::Xref(XrefEdit::Add(db_ref)))
+                    Ok(Edit::Xref(XrefEdit::AddOrUpdate(db_ref)))
                 }
                 "GO" => {
                     let db_ref =
                         DatabaseReference::new(db_name, id.to_string(), fetch_go_name(term)?);
-                    Ok(Edit::Xref(XrefEdit::Add(db_ref)))
+                    Ok(Edit::Xref(XrefEdit::AddOrUpdate(db_ref)))
                 }
                 _ => Err(anyhow::anyhow!("Cannot yet fetch from database {}", &db)),
             }
