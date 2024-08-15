@@ -1,11 +1,23 @@
 use std::{fs::File, path::PathBuf, str::FromStr};
 
+pub mod add;
+
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use desc_lib::{edit::Edit, rna_type::RnaType};
 
 #[derive(Subcommand, Debug)]
 pub enum Command {
+    /// Add a reference to the DESC file.
+    ///
+    /// This can be a database reference and must be of the form: `<DB>:<ID>`, for example:
+    /// - SO:0000276
+    /// - GO:0016442
+    Add {
+        /// The item to add
+        raw: String,
+    },
+
     /// Apply the changes in a JSON file
     Apply {
         /// The JSON file to use
@@ -83,6 +95,7 @@ impl Cli {
                 let rdr = File::open(&filename)?;
                 serde_json::from_reader(rdr)?
             }
+            Command::Add { raw } => add::reference_edit(raw)?,
         };
         desc.edit(edit)?;
         if !self.dry_run {

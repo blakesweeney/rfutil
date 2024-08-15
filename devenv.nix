@@ -1,10 +1,16 @@
 {pkgs, ...}: {
-  packages = with pkgs; [
-    cargo-nextest
-    easel
-    infernal
-    just
-  ];
+  packages = with pkgs;
+    [
+      cargo-nextest
+      easel
+      infernal
+      just
+    ]
+    ++ (with pkgs.darwin.apple_sdk; [
+      frameworks.CoreFoundation
+      frameworks.CoreServices
+      frameworks.SystemConfiguration
+    ]);
 
   languages = {
     rust.enable = true;
