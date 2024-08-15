@@ -35,8 +35,18 @@ impl ToString for DatabaseReference {
 
 impl DatabaseReferences {
     pub fn insert(&mut self, xref: DatabaseReference) {
-        // TODO Ensure they are unique
-        self.xrefs.push(xref);
+        let mut seen = false;
+        for cur in &mut self.xrefs {
+            if cur.database_name == xref.database_name && cur.internal_id == xref.internal_id {
+                if cur.name.is_none() {
+                    cur.name = xref.name.clone();
+                }
+                seen = true;
+            }
+        }
+        if !seen {
+            self.xrefs.push(xref)
+        }
     }
 
     pub fn edit(&mut self, edit: XrefEdit) {

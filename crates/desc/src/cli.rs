@@ -11,8 +11,8 @@ pub enum Command {
     /// Add a reference to the DESC file.
     ///
     /// This can be a database reference and must be of the form: `<DB>:<ID>`, for example:
-    /// - SO:0000276
     /// - GO:0016442
+    /// - http://www.example.com
     Add {
         /// The item to add
         raw: String,
