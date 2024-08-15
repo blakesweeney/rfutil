@@ -147,6 +147,9 @@ where
         for line in reader.lines() {
             let line = line?;
             let cleaned = line.trim_end();
+            if line.is_empty() {
+                continue;
+            }
             let field = Field::from_str(&cleaned[0..2])
                 .map_err(|_| DescParserError::UnknownFieldType(cleaned.to_string()))?;
             let value = cleaned[5..].trim();
