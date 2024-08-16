@@ -39,7 +39,7 @@ pub fn reference_edit(term: &str) -> Result<Edit> {
         Some((db, id)) => {
             let db_name = db.to_uppercase();
             match db_name.as_ref() {
-                "HTTP" => {
+                "HTTP" | "HTTPS" => {
                     let db_ref = DatabaseReference::new("URL".to_string(), term.to_string(), None);
                     Ok(Edit::Xref(XrefEdit::AddOrUpdate(db_ref)))
                 }
