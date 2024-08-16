@@ -5,6 +5,7 @@
       easel
       infernal
       just
+      openapi-generator-cli
     ]
     ++ (with pkgs.darwin.apple_sdk; [
       frameworks.CoreFoundation
