@@ -85,7 +85,7 @@ impl Cli {
                 Edit::Description(new_description)
             }
             Command::Rethreshold { cutoff } => Edit::GatheringThreshold(cutoff.clone()),
-            Command::UpdateWiki { article: _ } => todo!(),
+            Command::UpdateWiki { article } => Edit::WikiArticle(article.clone()),
             Command::Reclassify { rna_type } => {
                 let rtype = RnaType::from_str(rna_type)
                     .with_context(|| format!("Failed to find RNA type for `{}`", &rna_type))?;
