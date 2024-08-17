@@ -2,8 +2,6 @@ use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use crate::edit::AuthorEdit;
-
 #[derive(Debug, Error)]
 pub enum AuthorError {
     #[error("Duplicate author {0:?}")]
@@ -11,6 +9,18 @@ pub enum AuthorError {
 
     #[error("Duplicate author ORCID {0}")]
     DuplicateAuthorOrcid(String),
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum AuthorEdit {
+    /// Add the given Author to this Author set
+    AddAuthor(Author),
+    /// Remove the author(s) with the given name
+    RemoveByName(String),
+    /// Remove the author with the given ORCID
+    RemoveByOrcid(String),
+    /// Set the orcid for the author with the given name
+    SetOrcid(String, String),
 }
 
 #[derive(Clone, PartialEq, PartialOrd, Debug, Eq, Hash, Builder, Serialize, Deserialize)]

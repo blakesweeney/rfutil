@@ -84,7 +84,7 @@ where
                         continue;
                     }
                     let ids = pids
-                        .into_iter()
+                        .iter()
                         .map(|s| s.to_string())
                         .collect::<Vec<String>>()
                         .join("; ");
@@ -128,7 +128,7 @@ where
                         self.write_field(&field, &number)?;
                         self.write_field(&Field::ReferencePmid, reference.pmid())?;
                         self.write_field(&Field::ReferenceTitle, reference.title())?;
-                        self.write_field(&Field::ReferenceAuthor, &reference.authors())?;
+                        self.write_field(&Field::ReferenceAuthor, reference.authors())?;
                         self.write_field(&Field::ReferenceLocation, reference.citation())?;
                     }
                 }

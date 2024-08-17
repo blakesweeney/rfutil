@@ -50,7 +50,7 @@ pub fn decode(raw: &str) -> &str {
     if raw == "-" {
         return "";
     }
-    return raw;
+    raw
 }
 
 impl<R> TabularReader<R>
@@ -119,12 +119,12 @@ where
             Err(e) => Some(Err(e.into())),
             Ok(0) => None,
             Ok(_n) => {
-                if self.buf.starts_with("#") {
+                if self.buf.starts_with('#') {
                     return self.next();
                 }
                 let parts: Vec<&str> = NOT_WS
                     .splitn(&self.buf, self.number_of_columns)
-                    .map(|s| decode(s))
+                    .map(decode)
                     .collect();
                 let record = StringRecord::from(parts);
                 Some(record.deserialize(None).map_err(HitsError::from))

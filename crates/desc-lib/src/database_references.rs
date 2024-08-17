@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::edit::XrefEdit;
-
 #[derive(Clone, Eq, PartialEq, PartialOrd, Debug, Hash, Serialize, Deserialize)]
 pub struct DatabaseReference {
     database_name: String,
@@ -12,6 +10,14 @@ pub struct DatabaseReference {
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct DatabaseReferences {
     xrefs: Vec<DatabaseReference>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum XrefEdit {
+    AddOrUpdate(DatabaseReference),
+    Clear,
+    RemoveDb(String),
+    RemoveEntry { db: String, internal_id: String },
 }
 
 impl DatabaseReference {

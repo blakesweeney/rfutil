@@ -1,6 +1,6 @@
 use std::{fs::File, path::PathBuf, str::FromStr};
 
-pub mod add;
+pub mod references;
 
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
@@ -11,6 +11,7 @@ pub enum Command {
     /// Add a reference to the DESC file.
     ///
     /// This can be a database reference and must be of the form: `<DB>:<ID>`, for example:
+    ///
     /// - GO:0016442
     /// - http://www.example.com
     Add {
@@ -28,6 +29,18 @@ pub enum Command {
     Rethreshold {
         /// The new cutoff to use
         cutoff: f64,
+    },
+
+    /// Remove a reference to the DESC file.
+    ///
+    /// If there is no reference to the given item then this is a no-op. This can be a database
+    /// reference and must be of the form: `<DB>:<ID>`, for example:
+    ///
+    /// - GO:0016442
+    /// - http://www.example.com
+    Remove {
+        /// The item to remove.
+        raw: String,
     },
 
     /// Update the description of the family
@@ -84,7 +97,7 @@ impl Cli {
                 assert!(!new_description.is_empty(), "Must give a description");
                 Edit::Description(new_description)
             }
-            Command::Rethreshold { cutoff } => Edit::GatheringThreshold(cutoff.clone()),
+            Command::Rethreshold { cutoff } => Edit::GatheringThreshold(*cutoff),
             Command::UpdateWiki { article } => Edit::WikiArticle(article.clone()),
             Command::Reclassify { rna_type } => {
                 let rtype = RnaType::from_str(rna_type)
@@ -92,10 +105,11 @@ impl Cli {
                 Edit::RnaType(rtype)
             }
             Command::Apply { filename } => {
-                let rdr = File::open(&filename)?;
+                let rdr = File::open(filename)?;
                 serde_json::from_reader(rdr)?
             }
-            Command::Add { raw } => add::reference_edit(raw)?,
+            Command::Add { raw } => references::add(raw)?,
+            Command::Remove { raw } => references::remove(raw)?,
         };
         desc.edit(edit)?;
         if !self.dry_run {
