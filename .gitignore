@@ -10,4 +10,5 @@ devenv.local.nix
 # pre-commit
 .pre-commit-config.yaml
 
-crates/desc-lib/tests/files/
+crates/rfam/tests/files/
+.DS_Store

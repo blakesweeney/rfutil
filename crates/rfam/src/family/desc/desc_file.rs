@@ -1,12 +1,13 @@
 use derive_builder::Builder;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use crate::{
-    authors::{Author, Authors},
-    database_references::{DatabaseReference, DatabaseReferences},
-    edit::{ClanEdit, CommentChange, Edit},
-    references::{DescReference, References},
-    rna_type::RnaType,
+use crate::family::rna_type::RnaType;
+
+use super::{
+    authors::{Author, AuthorEdit, Authors},
+    database_references::{DatabaseReference, DatabaseReferences, XrefEdit},
+    references::{DescReference, ReferenceEdit, References},
     secondary_structure::SecondaryStructureSource,
     seed_evidence::SeedEvidence,
 };
@@ -14,8 +15,6 @@ use crate::{
 #[derive(Debug, Error)]
 pub enum DescEditError {}
 
-/// This represents all information in an Rfam DESC file. This is meant to represent as many of the
-/// constraints as is possible.
 #[derive(Clone, PartialEq, Debug, Builder)]
 pub struct DescFile {
     accession: String,
@@ -45,6 +44,45 @@ pub struct DescFile {
     wikipedia_article_name: String,
     #[builder(default)]
     other_fields: Vec<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum ClanEdit {
+    /// Remove the clan.
+    Clear,
+    /// Set the clan to the given clan id
+    Set(String),
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum CommentChange {
+    /// Remove the comment string
+    Clear,
+
+    /// Set the comment string to the given text
+    Set(String),
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum Edit {
+    /// Set the description to the given text
+    Description(String),
+    /// Set the gathering threshold to the given value.
+    GatheringThreshold(f64),
+    /// Edits to the author setting
+    Author(AuthorEdit),
+    /// Change the RNA type to the given one
+    RnaType(RnaType),
+    /// Edits to clans
+    Clan(ClanEdit),
+    /// Edits to the database references
+    Xref(XrefEdit),
+    /// Edits to the reference literature
+    Reference(ReferenceEdit),
+    /// Update the wikipedia article to the given one
+    WikiArticle(String),
+    /// Edits to the comments.
+    Comment(CommentChange),
 }
 
 impl DescFileBuilder {

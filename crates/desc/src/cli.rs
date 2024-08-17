@@ -4,7 +4,10 @@ pub mod references;
 
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
-use desc_lib::{edit::Edit, rna_type::RnaType};
+use rfam::family::{
+    desc::{self, desc_file::Edit},
+    rna_type::RnaType,
+};
 
 #[derive(Subcommand, Debug)]
 pub enum Command {
@@ -89,7 +92,7 @@ pub struct Cli {
 
 impl Cli {
     pub fn perform(&self) -> Result<()> {
-        let mut desc = desc_lib::from_path(&self.filename)?;
+        let mut desc = desc::from_path(&self.filename)?;
         let edit = match &self.command {
             Command::Comment { comment: _ } => todo!(),
             Command::Describe { description } => {
@@ -113,9 +116,9 @@ impl Cli {
         };
         desc.edit(edit)?;
         if !self.dry_run {
-            desc_lib::to_path(&self.filename, &desc)?;
+            desc::to_path(&self.filename, &desc)?;
         } else {
-            let text = desc_lib::to_text(&desc)?;
+            let text = desc::to_text(&desc)?;
             println!("{}", text);
         }
         Ok(())

@@ -7,7 +7,7 @@ use strum::IntoEnumIterator;
 use textwrap::{fill, LineEnding, Options, WordSeparator, WordSplitter};
 use thiserror::Error;
 
-use crate::{desc::DescFile, fields::Field};
+use super::{desc_file::DescFile, fields::Field};
 
 #[derive(Debug, Error)]
 pub enum DescWriterError {

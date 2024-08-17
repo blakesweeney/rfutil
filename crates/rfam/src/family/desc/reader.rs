@@ -11,15 +11,15 @@ use encoding_rs::Encoding;
 use encoding_rs_io::DecodeReaderBytesBuilder;
 use thiserror::Error;
 
-use crate::authors::Author;
-use crate::database_references::DatabaseReference;
-use crate::fields::Field;
-use crate::fields::MergeAction;
-use crate::references::DescReference;
-use crate::rna_type::RnaType;
-use crate::secondary_structure::SecondaryStructureSource;
-use crate::seed_evidence::SeedEvidence;
+use crate::family::rna_type::RnaType;
 
+use super::authors::Author;
+use super::database_references::DatabaseReference;
+use super::fields::Field;
+use super::fields::MergeAction;
+use super::references::DescReference;
+use super::secondary_structure::SecondaryStructureSource;
+use super::seed_evidence::SeedEvidence;
 use super::DescFile;
 
 #[derive(Debug, Error)]
@@ -37,7 +37,7 @@ pub enum DescParserError {
     InvalidIndex(String),
 
     #[error("Within reference block and saw unexpected field `{0:?}`")]
-    UnexpectedField(Field),
+    UnexpectedField(super::fields::Field),
 
     #[error("Unknown type of field {0}")]
     UnknownFieldType(String),
@@ -55,10 +55,10 @@ pub enum DescParserError {
     UnknownEncoding(String),
 
     #[error(transparent)]
-    DescFileBuilderError(#[from] crate::desc::DescFileBuilderError),
+    DescFileBuilderError(#[from] super::desc_file::DescFileBuilderError),
 
     #[error(transparent)]
-    DescReferenceBuilderError(#[from] crate::references::DescReferenceBuilderError),
+    DescReferenceBuilderError(#[from] super::references::DescReferenceBuilderError),
 
     #[error(transparent)]
     IoError(#[from] std::io::Error),

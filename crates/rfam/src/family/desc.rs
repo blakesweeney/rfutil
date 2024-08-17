@@ -1,17 +1,15 @@
 use std::{fs::File, path::Path};
 
-use desc::DescFile;
+use desc_file::DescFile;
 use reader::DescParser;
 use writer::DescWriter;
 
 pub mod authors;
 pub mod database_references;
-pub mod desc;
-pub mod edit;
+pub mod desc_file;
 pub mod fields;
 pub mod reader;
 pub mod references;
-pub mod rna_type;
 pub mod secondary_structure;
 pub mod seed_evidence;
 pub mod writer;

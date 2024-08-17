@@ -1,13 +1,12 @@
 use anyhow::Result;
 use reqwest::blocking::get;
-use serde::{Deserialize, Serialize};
-
-use desc_lib::{
+use rfam::family::desc::{
     authors::AuthorEdit,
     database_references::{DatabaseReference, XrefEdit},
-    edit::Edit,
+    desc_file::Edit,
     references::ReferenceEdit,
 };
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Eq, PartialEq, PartialOrd, Debug, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -76,7 +75,10 @@ pub fn remove(term: &str) -> Result<Edit> {
                 })),
                 "PMID" => Ok(Edit::Reference(ReferenceEdit::RemoveByPmid(id.to_string()))),
                 "ORCID" => Ok(Edit::Author(AuthorEdit::RemoveByOrcid(id.to_string()))),
-                _ => Err(anyhow::anyhow!("Cannot yet fetch from database {}", &db)),
+                _ => Err(anyhow::anyhow!(
+                    "Cannot determine what kind of reference {} is",
+                    &term
+                )),
             }
         }
         None => Err(anyhow::anyhow!("Cannot handle reference {:?}", term)),

@@ -4,6 +4,17 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+chardet = "0.2.4"
+encoding_rs = "0.8.34"
+encoding_rs_io = "0.1.7"
 infernal = { path = "../infernal", version = "0.1.0" }
 derive_builder.workspace = true
 serde.workspace = true
+strum.workspace = true
+textwrap = "0.16.0"
+thiserror.workspace = true
+
+[dev-dependencies]
+pretty_assertions = "1.4.0"
+rstest = "0.22.0"
+tempfile = "3.12.0"
