@@ -6,54 +6,78 @@ pub enum MergeAction {
     SpaceSeperated,
 }
 
+/// This represents all types of fields, and their prefixes, that can appear in an Rfam DESC file.
 #[derive(Clone, Debug, PartialEq, Eq, strum::EnumString, strum::Display, strum::EnumIter)]
 pub enum Field {
     #[strum(serialize = "AC")]
     Accession,
+
     #[strum(serialize = "ID")]
     Id,
+
     #[strum(serialize = "PI")]
     PreviousIds,
+
     #[strum(serialize = "DE")]
     Description,
+
     #[strum(serialize = "AU")]
     Author,
+
     #[strum(serialize = "SE")]
     SecondaryStructureEvidence,
+
     #[strum(serialize = "SS")]
     SecondaryStructureSource,
+
     #[strum(serialize = "GA")]
     GatheringThreshold,
+
     #[strum(serialize = "TC")]
     TrustedCutoff,
+
     #[strum(serialize = "NC")]
     NoiseCutoff,
+
     #[strum(serialize = "TP")]
     RnaType,
+
     #[strum(serialize = "BM")]
     BuildCommand,
+
     #[strum(serialize = "CB")]
     CalibrateCommand,
+
     #[strum(serialize = "SM")]
     SearchCommand,
+
     #[strum(serialize = "DR")]
     DatabaseReference,
+
     #[strum(serialize = "RN")]
     ReferenceNumber,
+
     #[strum(serialize = "RT")]
     ReferenceTitle,
+
     #[strum(serialize = "RL")]
     ReferenceLocation,
+
     #[strum(serialize = "RA")]
     ReferenceAuthor,
+
     #[strum(serialize = "RM")]
     ReferencePmid,
+
     #[strum(serialize = "CC")]
     Comment,
+
     #[strum(serialize = "WK")]
     WikiArticle,
+
     #[strum(serialize = "CL")]
     ClanId,
+
     #[strum(serialize = "**")]
     Other,
 }

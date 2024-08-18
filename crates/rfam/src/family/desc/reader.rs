@@ -106,7 +106,10 @@ pub struct DescParser<R> {
 }
 
 impl DescParser<File> {
-    pub fn from_path(path: &Path) -> Result<Self, std::io::Error> {
+    pub fn from_path<P>(path: P) -> Result<Self, std::io::Error>
+    where
+        P: AsRef<Path>,
+    {
         let file = File::open(path)?;
         Ok(Self::from_reader(file))
     }

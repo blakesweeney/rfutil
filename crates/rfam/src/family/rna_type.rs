@@ -1,11 +1,17 @@
+/// This module represents the RNA types that Rfam knows about. Rfam has a small fixed set of RNA
+/// types that are allowed. These mostly map to things in more well known systems, eg the sequence
+/// ontology, but the structure and naming is specific for Rfam.
 use serde::{Deserialize, Serialize};
 
+/// All Rfam RNA types.
 #[derive(Clone, Debug, PartialEq, strum::EnumString, strum::Display, Serialize, Deserialize)]
 #[strum(ascii_case_insensitive)]
 pub enum RnaType {
+    /// A fallback term for any cis-regulatory element.
     #[strum(serialize = "Cis-reg;")]
     CisReg,
 
+    /// A term for an Internal Ribosome Entry Site.
     #[strum(serialize = "Cis-reg; IRES;")]
     IRES,
 

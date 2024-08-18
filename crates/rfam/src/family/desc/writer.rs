@@ -27,9 +27,12 @@ pub struct DescWriter<W> {
 }
 
 impl DescWriter<File> {
-    pub fn to_path(path: &Path) -> Result<Self, DescWriterError> {
-        let file =
-            File::create(path).map_err(|e| DescWriterError::FailedOpen(PathBuf::from(path), e))?;
+    pub fn to_path<P>(path: P) -> Result<Self, DescWriterError>
+    where
+        P: AsRef<Path>,
+    {
+        let file = File::create(path.as_ref())
+            .map_err(|e| DescWriterError::FailedOpen(PathBuf::from(path.as_ref()), e))?;
         Ok(Self::to_writer(file))
     }
 }

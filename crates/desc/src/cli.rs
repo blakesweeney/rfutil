@@ -41,6 +41,7 @@ pub enum Command {
     ///
     /// - GO:0016442
     /// - http://www.example.com
+    #[clap(alias = "rm")]
     Remove {
         /// The item to remove.
         raw: String,

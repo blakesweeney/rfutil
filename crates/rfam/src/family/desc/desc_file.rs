@@ -46,6 +46,7 @@ pub struct DescFile {
     other_fields: Vec<String>,
 }
 
+/// Changes that can be made to the clan setting.
 #[derive(Debug, Serialize, Deserialize)]
 pub enum ClanEdit {
     /// Remove the clan.
@@ -54,6 +55,7 @@ pub enum ClanEdit {
     Set(String),
 }
 
+/// Changes that can be made to a comment field.
 #[derive(Debug, Serialize, Deserialize)]
 pub enum CommentChange {
     /// Remove the comment string
@@ -63,24 +65,38 @@ pub enum CommentChange {
     Set(String),
 }
 
+/// The edits that can be made to a `DescFile`.
+///
+/// There are some limits to changing DescFiles. Notably this cannot change the id or accession of a
+/// desc file. The id has to changed by using an rfam script `rfmove.pl`, while the accession cannot
+/// be changed and is handled by the Rfam curation pipeline. Thus these fields are considered
+/// immutable for this code.
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Edit {
     /// Set the description to the given text
     Description(String),
+
     /// Set the gathering threshold to the given value.
     GatheringThreshold(f64),
+
     /// Edits to the author setting
     Author(AuthorEdit),
+
     /// Change the RNA type to the given one
     RnaType(RnaType),
+
     /// Edits to clans
     Clan(ClanEdit),
+
     /// Edits to the database references
     Xref(XrefEdit),
+
     /// Edits to the reference literature
     Reference(ReferenceEdit),
+
     /// Update the wikipedia article to the given one
     WikiArticle(String),
+
     /// Edits to the comments.
     Comment(CommentChange),
 }
@@ -114,10 +130,27 @@ impl DescFileBuilder {
 }
 
 impl DescFile {
+    /// Create a new `DescFileBuilder`.
+    ///
+    /// ## Example
+    /// ```
+    /// let builder = DescFile::builder();
+    /// ...
+    /// let desc_file = builder.build()?;
+    /// ````
     pub fn builder() -> DescFileBuilder {
         DescFileBuilder::default()
     }
 
+    // Edit this `DescFile`.
+    //
+    // ## Example
+    //
+    // ```
+    // let edit = Edit::WikiArticle("ncRna");
+    // desc.edit(edit)?;
+    // assert_eq!(desc.wikiarticle(), "ncRna");
+    // ```
     pub fn edit(&mut self, edit: Edit) -> Result<(), DescEditError> {
         match edit {
             Edit::Description(d) => {
