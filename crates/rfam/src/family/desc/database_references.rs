@@ -33,8 +33,8 @@ impl DatabaseReference {
 impl ToString for DatabaseReference {
     fn to_string(&self) -> String {
         match &self.name {
-            Some(n) => format!("{}; {}; {}", self.database_name, self.internal_id, n),
-            None => format!("{}; {}", self.database_name, self.internal_id),
+            Some(n) => format!("{}; {}; {};", self.database_name, self.internal_id, n),
+            None => format!("{}; {};", self.database_name, self.internal_id),
         }
     }
 }
