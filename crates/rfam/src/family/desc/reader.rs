@@ -246,14 +246,22 @@ where
                 Field::DatabaseReference => {
                     let parts: Vec<&str> = value.split("; ").collect();
                     let xref = match parts[..] {
-                        [db, id] => {
+                        [db, mut id] => {
+                            if id.ends_with(';') {
+                                id = id.trim_end_matches(';').trim_end()
+                            }
                             Ok(DatabaseReference::new(db.to_string(), id.to_string(), None))
                         }
-                        [db, id, name] => Ok(DatabaseReference::new(
-                            db.to_string(),
-                            id.to_string(),
-                            Some(name.to_string()),
-                        )),
+                        [db, id, mut name] => {
+                            if name.ends_with(';') {
+                                name = name.trim_end_matches(';').trim_end()
+                            }
+                            Ok(DatabaseReference::new(
+                                db.to_string(),
+                                id.to_string(),
+                                Some(name.to_string()),
+                            ))
+                        }
                         _ => Err(DescParserError::InvalidDbReference(value.to_string())),
                     }?;
                     builder.add_xref(xref);
