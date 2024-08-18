@@ -81,7 +81,7 @@ impl DatabaseReferences {
             }
             XrefEdit::RemoveEntry { db, internal_id } => {
                 self.xrefs
-                    .retain(|x| x.database_name != db && x.internal_id == internal_id);
+                    .retain(|x| !(x.database_name == db && x.internal_id == internal_id));
             }
         }
     }
