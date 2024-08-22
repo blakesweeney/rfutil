@@ -4,6 +4,7 @@ members = [
   "crates/desc",
   "crates/infernal",
   "crates/rfam",
+  "crates/ols-api",
 ]
 
 [workspace.dependencies]
