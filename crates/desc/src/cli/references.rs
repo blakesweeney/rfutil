@@ -43,6 +43,10 @@ pub fn add(term: &str) -> Result<Edit> {
 }
 
 pub fn remove(term: &str) -> Result<Edit> {
+    if term == "SO" || term == "GO" {
+        return Ok(Edit::Xref(XrefEdit::RemoveDb(term.to_string())));
+    }
+
     match term.split_once(':') {
         Some((db, id)) => {
             let db_name = db.to_uppercase();
@@ -51,14 +55,16 @@ pub fn remove(term: &str) -> Result<Edit> {
                     db: "URL".to_string(),
                     internal_id: term.to_string(),
                 })),
-                "GO" => Ok(Edit::Xref(XrefEdit::RemoveEntry {
-                    db: db_name,
-                    internal_id: id.to_string(),
-                })),
-                "SO" => Ok(Edit::Xref(XrefEdit::RemoveEntry {
-                    db: db_name,
-                    internal_id: id.to_string(),
-                })),
+                "GO" | "SO" => {
+                    if id.is_empty() {
+                        Ok(Edit::Xref(XrefEdit::RemoveDb(db_name)))
+                    } else {
+                        Ok(Edit::Xref(XrefEdit::RemoveEntry {
+                            db: db_name,
+                            internal_id: id.to_string(),
+                        }))
+                    }
+                }
                 "PMID" => Ok(Edit::Reference(ReferenceEdit::RemoveByPmid(id.to_string()))),
                 "ORCID" => Ok(Edit::Author(AuthorEdit::RemoveByOrcid(id.to_string()))),
                 _ => Err(anyhow::anyhow!(
